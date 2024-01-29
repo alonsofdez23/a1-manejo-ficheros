@@ -49,7 +49,7 @@ public class GestionAlmacen {
 
     /**
      * Intentamos leer el archivo.dat con FileInputStream.
-     * En caso de existir, metemos los datos en el ArrayList "listaArticulos"
+     * En caso de existir, metemos los datos en el ArrayList "listaArticulos".
      */
     private static void cargarArticulosDesdeArchivo() {
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(NOMBRE_ARCHIVO))) {
@@ -63,6 +63,10 @@ public class GestionAlmacen {
         }
     }
 
+    /**
+     * Instanciamos un ObjectOutputStream y le insertamos la lista de artículos
+     * con el método writeObject.
+     */
     private static void guardarArticulosEnArchivo() {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(NOMBRE_ARCHIVO))) {
             oos.writeObject(listaArticulos);
@@ -93,6 +97,9 @@ public class GestionAlmacen {
         }
     }
 
+    /**
+     * Pédimos al usuario los campos de Articulo para añadirlos a listaArticulos.
+     */
     private static void agregarArticulo(Scanner scanner) {
         System.out.println("Ingrese los datos del nuevo artículo:");
 
@@ -129,6 +136,10 @@ public class GestionAlmacen {
         System.out.println("Artículo añadido correctamente.");
     }
 
+    /**
+     * Recorremos la listaArticulos para comprobar si existe algún artículo con
+     * el id pasado como parámetro.
+     */
     private static boolean idExistente(int id) {
         for (Articulo articulo : listaArticulos) {
             if (articulo.getId() == id) {
@@ -139,6 +150,10 @@ public class GestionAlmacen {
         return false;
     }
 
+    /**
+     * Recorremos la listaArticulos hasta encontrar el artículo con el id pasado
+     * como parámetro para borrarlo de la lista con el método remove().
+     */
     private static void borrarArticulo(Scanner scanner) {
         System.out.println("Inserte el ID del artículo que desea borrar: ");
         int idBorrar = scanner.nextInt();
@@ -158,6 +173,10 @@ public class GestionAlmacen {
         }
     }
 
+    /**
+     * Recorremos la listaArticulos hasta encontrar el artículo con el id pasado
+     * como parámetro para mostrarlo por pantalla.
+     */
     private static void consultarArticulo(Scanner scanner) {
         System.out.println("Inserte el ID del artículo que desea consultar: ");
         int idConsultar = scanner.nextInt();
@@ -176,14 +195,22 @@ public class GestionAlmacen {
         }
     }
 
+    /**
+     * Recorremos la listaArticulos y mostramos por pantalla cada Articulo.
+     */
     private static void listarArticulos() {
         for (Articulo a : listaArticulos) {
             System.out.println(a);
         }
     }
 
+    /**
+     * Nos valemos de la biblioteca opencsv para generar un .csv insertando
+     * tantos rows como artículos obtenga al recorrer la listaArticulos.
+     */
     private static void exportarArticulosACSV() {
         try (CSVWriter writer = new CSVWriter(new FileWriter(NOMBRE_CSV))) {
+            // Insertamos el primer row con los campos/atributos de Articulo
             String[] header = {"ID", "Nombre", "Descripción", "Stock", "Precio"};
             writer.writeNext(header);
 
